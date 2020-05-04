@@ -15,7 +15,7 @@ app.post('/posts', (req, res) => {
     console.log('Request: ', req.body);
     const command = req.body.command;
     const stripAnimations = [
-	{ title: "POWER", description: "Turn the LEDS on and off", state: ledState }, 
+	    { title: "POWER", description: "Turn the LEDS on and off", isActive: ledState }, 
         { title: "rainbow", description: "Colorful rainbow" },
         { title: "colorful", description: "It's all colorful" }
     ];
@@ -40,15 +40,17 @@ app.post('/toggles', (req, res) => {
     const toggleObj = req.body;
     console.log('Request: ', req.body);
     let command = 'echo no actions taken';
-    if (toggleObj.name === 'powerToggle' && toggleObj.state) {
-	command = './../send_command.sh';
-	ledState = true;
+    console.log(toggleObj);
+    if (toggleObj.name === 'POWER' && toggleObj.state) {
+        command = './../send_command.sh';
+        ledState = true;
     	console.log('Turning LEDS on');
-    } else if (toggleObj.name === 'powerToggle') {
-	ledState = false;
-	command = './../send_stop.sh';
+    } else if (toggleObj.name === 'POWER') {
+        ledState = false;
+        command = './../send_stop.sh';
         console.log('Turning LEDS off');
     }
+    command = 'echo nothin';
     exec(command, (error, stdout, stderr) => {
 	if (error) {
 	    console.log(`error: ${error.message}`);

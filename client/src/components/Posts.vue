@@ -2,10 +2,9 @@
   <div class="posts">
     <md-button class="md-raised" v-on:click="getPosts()">Send Command</md-button>
     <br/>
-    <md-switch v-model="isActive" @change="togglePost('powerToggle', isActive)">POWER</md-switch>
     <div v-for="stripAnimation in stripAnimations" v-bind:key="stripAnimation.title">
       <p>
-        <md-switch v-model="stripAnimation.isActive" @change="togglePost(stripAnimation.title, isActive)">{{ stripAnimation.title }}</md-switch>
+        <md-switch v-model="stripAnimation.isActive" @change="togglePost(stripAnimation.title, stripAnimation.isActive)">{{ stripAnimation.title }}</md-switch>
       </p>
     </div>
   </div>
@@ -24,10 +23,11 @@ export default {
     }
   },
   mounted () {
-    this.getPosts()
+    this.$options.interval = setInterval(this.getPosts, 600000)
   },
   methods: {
     async getPosts () {
+      console.log('Getting posts!')
       const userData = { command: 'ls', type: 'Hello' }
       const response = await PostsService.fetchPosts(userData)
       console.log(response.data)
