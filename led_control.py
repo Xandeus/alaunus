@@ -101,8 +101,9 @@ def musicServer(strip):
     print ("Listening for client . . .")
     conn, address = server_socket.accept()
     print ("Connected to client at ", address)
+    music_queue = []
     while True:
-        output = conn.recv(2048);
+        output = conn.recv(4096);
         if output.strip() == "disconnect":
             conn.close()
             sys.exit("Received disconnect message.  Shutting down.")
@@ -110,10 +111,17 @@ def musicServer(strip):
         elif output:
             decoded = output.decode("utf-8").rstrip()
         cava_values = decoded.split(";")
-        avg = (int(cava_values[0]) + int(cava_values[1]) + int(cava_values[2]) + int(cava_values[3])) / 4
+        print len(cava_values)
+        length_cava = len(cava_values) 
+        # num_bars = LED_COUNT / len(cava_values)
+        if (length_cava == 241):
+            for i in range(0, 240):
+                if (cava_values[i] != ''):
+                    strip.setPixelColor(i, wheel((int(i * 256 / strip.numPixels()) + int(cava_values[i])) & 255))
+            # avg = (int(cava_values[0]) + int(cava_values[1]) + int(cava_values[2]) + int(cava_values[3])) / 4
+            # strip.setBrightness(avg)
+            strip.show()
 
-        strip.setBrightness(avg)
-        strip.show()
 
 def music_leds(strip, music):
     """Draw rainbow that uniformly distributes itself across all pixels."""
@@ -310,7 +318,7 @@ if __name__ == '__main__':
         print ('Use "-c" argument to clear LEDs on exit')
 
     try:
-        while True:
+        while not args.music:
             # Check boxes
             if (customColorActive):
                 customColor(strip)

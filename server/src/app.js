@@ -9,6 +9,7 @@ let ledState = false
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
+console.log('Starting up')
 
 app.post('/posts', (req, res) => {
     let result = 'No response';
@@ -50,7 +51,6 @@ app.post('/toggles', (req, res) => {
         command = './../send_stop.sh';
         console.log('Turning LEDS off');
     }
-    command = 'echo nothin';
     exec(command, (error, stdout, stderr) => {
 	if (error) {
 	    console.log(`error: ${error.message}`);
