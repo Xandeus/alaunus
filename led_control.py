@@ -98,20 +98,19 @@ def musicServer(strip):
     server_socket.bind(address)
     server_socket.listen(5)
 
-    print ("Listening for client . . .")
+    print("Listening for client . . .")
     conn, address = server_socket.accept()
-    print ("Connected to client at ", address)
+    print("Connected to client at ", address)
     buffer_list = []
+    offset = 0
     while True:
         output = conn.recv(4096);
         decoded = output.decode("utf-8")
         cava_values = decoded.split("\n")
-        print len(cava_values)
         for x in range(len(cava_values)):
             bars = cava_values[x].split(";")
             if (len(bars) == 241):
                 buffer_list.append(bars)
-        print len(buffer_list)
         # num_bars = LED_COUNT / len(cava_values)
         while len(buffer_list) > 0:
             total = 0
@@ -194,17 +193,34 @@ def simpleWave(strip, rate, cycles, scale, wait):
         time.sleep(wait/1000.0)
 
 def fade(strip, cycles, wait_ms=5):
+    cRedVal = random.randint(0,255)
+    cGreenVal = random.randint(0,255)
+    cBlueVal = random.randint(0,255)
+
+    dRedVal = random.randint(0,255)
+    dGreenVal = random.randint(0,255)
+    dBlueVal = random.randint(0,255)
     for c in range(cycles):
-        for x in range(200):
+        while ((cRedVal, cGreenVal, cBlueVal) != (dRedVal, dGreenVal, dBlueVal)):
             for i in range(strip.numPixels()):
-                strip.setPixelColor(i, Color(x, x/2, 255))
+                strip.setPixelColor(i, Color(cGreenVal, cRedVal, cBlueVal))
+            if (cRedVal > dRedVal):
+                cRedVal -= 1
+            elif (cRedVal < dRedVal):
+                cRedVal += 1
+            if (cGreenVal > dGreenVal):
+                cGreenVal -= 1
+            elif (cGreenVal < dGreenVal):
+                cGreenVal += 1
+            if (cBlueVal > dBlueVal):
+                cBlueVal -= 1
+            elif (cBlueVal < dBlueVal):
+                cBlueVal += 1
             strip.show()
             time.sleep(timeDelay/100000.0)
-        for y in range(200):
-            for i in range(strip.numPixels()):
-                strip.setPixelColor(i, Color(200 - y, (200 - y)/2, 255))
-            strip.show()
-            time.sleep(timeDelay/100000.0)
+        dRedVal = random.randint(0,255)
+        dGreenVal = random.randint(0,255)
+        dBlueVal = random.randint(0,255)
 
 def handleServerFIFO():
     print "Opening FIFO for reading"
