@@ -6,5 +6,8 @@ export default {
   },
   fetchToggle (data) {
     return Api().post('toggles', data)
+  },
+  fetchRFTransmit (data) {
+    return Api().post('rfTransmits', data)
   }
 }

@@ -7,6 +7,11 @@
         <md-switch v-model="stripAnimation.isActive" @change="togglePost(stripAnimation.title, stripAnimation.isActive)">{{ stripAnimation.title }}</md-switch>
       </p>
     </div>
+    <div>
+      <md-button class="md-raised md-fab-top-left" v-on:click="trasmitRF('power_on')">Power Button</md-button>
+      <md-button class="md-raised md-fab-top-center" v-on:click="transmitRF('red_button')">Red Button</md-button>
+      <md-button class="md-raised md-fab-top-right" v-on:click="transmitRF('green_button')">Green Button</md-button>
+    </div>
   </div>
 </template>
 
@@ -39,6 +44,12 @@ export default {
       const response = await PostsService.fetchToggle(data)
       console.log(response.data)
       this.posts = response.data
+    },
+    async transmitRF (transmissionButtonName) {
+      console.log('Tranmitting')
+      const data = { name: transmissionButtonName }
+      const response = await PostsService.fetchRFTransmit(data)
+      console.log(response.data)
     }
   }
 }
