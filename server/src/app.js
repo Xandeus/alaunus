@@ -71,7 +71,7 @@ app.post('/rfTransmits', (req, res) => {
     let command = 'echo no actions taken';
     console.log(rfTransmissionObj);
     console.log('Transmitting bitstring', rfTransmissionObj.name);
-    command = './../transmitRF.py %s' % rfTransmissionObj.name
+    command = './../transmitRF.py ' + rfTransmissionObj.name
     exec(command, (error, stdout, stderr) => {
 	if (error) {
 	    console.log(`error: ${error.message}`);

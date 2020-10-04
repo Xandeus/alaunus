@@ -8,7 +8,7 @@
       </p>
     </div>
     <div>
-      <md-button class="md-raised md-fab-top-left" v-on:click="trasmitRF('power_on')">Power Button</md-button>
+      <md-button class="md-raised md-fab-top-left" v-on:click="transmitRF('power_on')">Power Button</md-button>
       <md-button class="md-raised md-fab-top-center" v-on:click="transmitRF('red_button')">Red Button</md-button>
       <md-button class="md-raised md-fab-top-right" v-on:click="transmitRF('green_button')">Green Button</md-button>
     </div>
