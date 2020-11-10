@@ -65,5 +65,26 @@ app.post('/toggles', (req, res) => {
     });
 })
 
+app.post('/rfTransmits', (req, res) => {
+    const rfTransmissionObj = req.body;
+    console.log('Request: ', req.body);
+    let command = 'echo no actions taken';
+    console.log(rfTransmissionObj);
+    console.log('Transmitting bitstring', rfTransmissionObj.name);
+    command = `ssh pi@192.168.50.7 'python3 transmitRF ${rfTransmissionObj.name}'` 
+    exec(command, (error, stdout, stderr) => {
+	if (error) {
+	    console.log(`error: ${error.message}`);
+	    return;
+	}
+	if (stderr) {
+	    console.log(`stderr: ${stderr}`);
+	    return;
+	}
+	console.log(`stdout: ${stdout}`);
+	res.send('exectued command');
+    });
+})
+
 
 app.listen(process.env.PORT || 8081)
